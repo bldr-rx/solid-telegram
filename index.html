@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erin — Independent Work Options</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.08);
+    --border-med: rgba(0,0,0,0.14);
+    --text: #1a1917;
+    --text-2: #5c5a55;
+    --text-3: #9c9a94;
+    --purple-bg: #eeedfe;
+    --purple-text: #3c3489;
+    --teal-bg: #e1f5ee;
+    --teal-text: #085041;
+    --amber-bg: #faeeda;
+    --amber-text: #633806;
+    --coral-bg: #faece7;
+    --coral-text: #712b13;
+    --green-bg: #eaf3de;
+    --green-text: #3b6d11;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--purple-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--purple-text);
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .header-text p {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .sec-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-med);
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover { background: var(--surface2); }
+
+  .filter-btn.active {
+    background: var(--purple-bg);
+    color: var(--purple-text);
+    border-color: #afa9ec;
+    font-weight: 500;
+  }
+
+  .cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .card.hidden { display: none; }
+
+  .card:hover {
+    border-color: var(--border-med);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .cat-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .cat-direct { background: var(--purple-bg); color: var(--purple-text); }
+  .cat-service { background: var(--teal-bg); color: var(--teal-text); }
+  .cat-content { background: var(--amber-bg); color: var(--amber-text); }
+  .cat-new { background: var(--coral-bg); color: var(--coral-text); }
+
+  .card-body {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .earn-block { display: flex; flex-direction: column; gap: 10px; }
+
+  .earn-val { font-size: 14px; font-weight: 500; color: var(--text); }
+  .earn-lbl { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+  .meta-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+
+  .meta-pill {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border-med);
+    color: var(--text-2);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .start-row {
+    font-size: 12px;
+    color: var(--text-3);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  .start-row span { color: var(--text-2); }
+
+  .income-section {
+    background: var(--surface2);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 1.75rem;
+  }
+
+  .income-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .income-card {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+
+  .income-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .income-lbl { font-size: 11px; color: var(--text-2); line-height: 1.4; }
+
+  .insight {
+    background: var(--teal-bg);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 1.75rem;
+  }
+
+  .insight p { font-size: 13px; color: var(--teal-text); line-height: 1.65; }
+  .insight strong { font-weight: 500; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+    align-items: center;
+  }
+
+  .legend-label { font-size: 11px; color: var(--text-3); margin-right: 4px; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--text-3);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 620px) {
+    header { padding: 1.5rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    .card-body { grid-template-columns: 1fr; gap: 12px; }
+    .income-grid { grid-template-columns: repeat(2, 1fr); }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="avatar">EK</div>
+    <div class="header-text">
+      <h1>Independent work options</h1>
+      <p>Non-W2 paths for an eDiscovery &amp; PI paralegal specialist — remote, flexible, $50K+ target</p>
+      <div class="tag-row">
+        <span class="tag" style="background:var(--purple-bg);color:var(--purple-text);">eDiscovery</span>
+        <span class="tag" style="background:var(--teal-bg);color:var(--teal-text);">Legal ops</span>
+        <span class="tag" style="background:var(--amber-bg);color:var(--amber-text);">Medical-legal</span>
+        <span class="tag" style="background:var(--coral-bg);color:var(--coral-text);">Remote-ready</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="sec-label" style="margin-top:0.25rem;">Filter by category</div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterCards(this,'all')">All options</button>
+    <button class="filter-btn" onclick="filterCards(this,'direct')">Direct skills</button>
+    <button class="filter-btn" onclick="filterCards(this,'service')">Service business</button>
+    <button class="filter-btn" onclick="filterCards(this,'content')">Content / consulting</button>
+    <button class="filter-btn" onclick="filterCards(this,'new')">Something new</button>
+  </div>
+
+  <div class="legend">
+    <span class="legend-label">Categories:</span>
+    <span class="tag" style="background:var(--purple-bg);color:var(--purple-text);font-size:11px;padding:3px 10px;border-radius:20px;">Direct skills</span>
+    <span class="tag" style="background:var(--teal-bg);color:var(--teal-text);font-size:11px;padding:3px 10px;border-radius:20px;">Service business</span>
+    <span class="tag" style="background:var(--amber-bg);color:var(--amber-text);font-size:11px;padding:3px 10px;border-radius:20px;">Content / consulting</span>
+    <span class="tag" style="background:var(--coral-bg);color:var(--coral-text);font-size:11px;padding:3px 10px;border-radius:20px;">Something new</span>
+  </div>
+
+  <div class="cards-list" id="cards">
+
+    <div class="card" data-cat="direct">
+      <div class="card-top">
+        <div class="card-title">Contract document reviewer</div>
+        <span class="cat-badge cat-direct">Direct skills</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$35–65/hr</div><div class="earn-lbl">hourly rate</div></div>
+          <div><div class="earn-val">$50K+</div><div class="earn-lbl">at 20 hrs/wk</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Fully remote</span>
+            <span class="meta-pill">No startup cost</span>
+            <span class="meta-pill">Fast to start</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Register with legal staffing agencies — Hire Counsel, Special Counsel, Axiom, Consilio — and pick up document review projects as they come in. Truly flexible, work as much or as little as desired. No client acquisition needed; the agencies handle it. Best immediate-income option with zero ramp time.</div>
+          <div class="start-row">First step: <span>Register on Hire Counsel and Special Counsel this week — both have online applications</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="direct">
+      <div class="card-top">
+        <div class="card-title">Freelance PI paralegal — firm retainer</div>
+        <span class="cat-badge cat-direct">Direct skills</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$25–45/hr</div><div class="earn-lbl">hourly rate</div></div>
+          <div><div class="earn-val">$30–60K</div><div class="earn-lbl">at 15–25 hrs/wk</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Fully remote</span>
+            <span class="meta-pill">Recurring income</span>
+            <span class="meta-pill">Low overhead</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Solo and small PI firms need experienced overflow paralegal support but can't justify a full-time hire. Target 2–3 firms on monthly retainers. Steady predictable income, real relationships, and she controls the hours entirely. Former colleagues and attorney contacts are the warmest starting point.</div>
+          <div class="start-row">First step: <span>Cold outreach to 10 solo PI attorneys on LinkedIn or Martindale-Hubbell</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="service">
+      <div class="card-top">
+        <div class="card-title">Medical chronology service</div>
+        <span class="cat-badge cat-service">Service business</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$150–400/case</div><div class="earn-lbl">per deliverable</div></div>
+          <div><div class="earn-val">$50–80K</div><div class="earn-lbl">at moderate volume</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Fully remote</span>
+            <span class="meta-pill">High margin</span>
+            <span class="meta-pill">Scalable</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Attorneys pay well for clean, accurate medical chronologies and record summaries. Her PI background makes her faster and more credible than generic VAs. Build a simple one-page service menu, set flat-case pricing, and pitch former attorney contacts first. Volume of even 5–8 cases/month hits $50K+ with minimal hours.</div>
+          <div class="start-row">First step: <span>Create a 1-page service menu with flat pricing and pitch 5 former attorney contacts</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="service">
+      <div class="card-top">
+        <div class="card-title">eDiscovery consulting for small firms</div>
+        <span class="cat-badge cat-service">Service business</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$75–125/hr</div><div class="earn-lbl">advisory rate</div></div>
+          <div><div class="earn-val">$40–70K</div><div class="earn-lbl">part-time</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Remote / async</span>
+            <span class="meta-pill">Project-based</span>
+            <span class="meta-pill">Premium rate</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Small firms need help selecting platforms, building workflows, and training staff but can't afford enterprise support contracts. She can offer platform assessments, workflow design, and staff training as discrete fixed-fee projects. Her 10+ years across both boutique and enterprise eDiscovery is a genuine differentiator here.</div>
+          <div class="start-row">First step: <span>Define 2–3 packaged service offerings with flat-fee pricing (e.g., platform assessment = $500)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="service">
+      <div class="card-top">
+        <div class="card-title">Legal virtual assistant agency</div>
+        <span class="cat-badge cat-service">Service business</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$35–60/hr billed</div><div class="earn-lbl">to clients</div></div>
+          <div><div class="earn-val">$60–100K+</div><div class="earn-lbl">at scale</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Remote</span>
+            <span class="meta-pill">Scalable</span>
+            <span class="meta-pill">12–18 mo ramp</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">She starts doing legal VA work herself, then recruits and manages other legal VAs as demand grows. She becomes the account manager and quality reviewer — leveraging her reputation and people skills rather than just her own billable hours. Bigger long-term upside than solo freelancing, but needs a solid client base first before bringing anyone on.</div>
+          <div class="start-row">First step: <span>Start solo, land 3 stable clients, then assess whether to bring on a subcontractor</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="content">
+      <div class="card-top">
+        <div class="card-title">Online course — eDiscovery fundamentals</div>
+        <span class="cat-badge cat-content">Content / consulting</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$97–297</div><div class="earn-lbl">per student</div></div>
+          <div><div class="earn-val">Passive after launch</div><div class="earn-lbl">income model</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Fully async</span>
+            <span class="meta-pill">Scales without her</span>
+            <span class="meta-pill">3–6 mo build</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Paralegals, legal assistants, and career changers are hungry for practical eDiscovery training. A short course (6–10 modules) on Teachable or Thinkific targeting new legal professionals can generate passive income indefinitely after the initial build. LinkedIn content drives traffic. Validate demand before building — post a poll first.</div>
+          <div class="start-row">First step: <span>Post a LinkedIn poll asking if followers want eDiscovery career training — gauge interest in a week</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="content">
+      <div class="card-top">
+        <div class="card-title">LinkedIn content — legal ops authority</div>
+        <span class="cat-badge cat-content">Content / consulting</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">Slow burn</div><div class="earn-lbl">direct income</div></div>
+          <div><div class="earn-val">Lead gen</div><div class="earn-lbl">inbound clients</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Fully remote</span>
+            <span class="meta-pill">Builds authority</span>
+            <span class="meta-pill">Compounds over time</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Posting 2–3x/week about eDiscovery, PI practice tips, and legal ops builds an audience that feeds every other revenue stream. Sponsorships come later but the real ROI is inbound client inquiries for her consulting and service work. Pairs especially well with the course and chronology service. Low time cost, high long-term leverage.</div>
+          <div class="start-row">First step: <span>Commit to 90 days of consistent posting before evaluating whether it's driving leads</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="new">
+      <div class="card-top">
+        <div class="card-title">Life care plan aide / medical cost projection</div>
+        <span class="cat-badge cat-new">Something new</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$60–100/hr</div><div class="earn-lbl">with certification</div></div>
+          <div><div class="earn-val">$50–80K</div><div class="earn-lbl">part-time</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Remote</span>
+            <span class="meta-pill">Cert required</span>
+            <span class="meta-pill">6–12 mo ramp</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Life care planners project long-term medical costs for injury and disability cases — used heavily in PI and workers' comp litigation. Her PI + medical records background is a natural foundation. The Certified Life Care Planner (CLCP) credential opens the door; some eligibility pathways do not require a nursing degree. High-value niche with strong attorney demand.</div>
+          <div class="start-row">First step: <span>Research CLCP eligibility at internationalacademyoflifecareplanners.com</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="new">
+      <div class="card-top">
+        <div class="card-title">Notary signing agent</div>
+        <span class="cat-badge cat-new">Something new</span>
+      </div>
+      <div class="card-body">
+        <div class="earn-block">
+          <div><div class="earn-val">$75–200/signing</div><div class="earn-lbl">per appointment</div></div>
+          <div><div class="earn-val">$25–50K</div><div class="earn-lbl">supplemental income</div></div>
+          <div class="meta-row">
+            <span class="meta-pill">Hampton Roads</span>
+            <span class="meta-pill">Low startup cost</span>
+            <span class="meta-pill">Flexible schedule</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-desc">Real estate closings, loan signings, and legal documents all need notary signing agents. Virginia notary commission plus NNA certification costs under $200 total. Not fully remote but completely self-scheduled — she sets her own calendar. Good supplemental income alongside a remote primary stream, and the Hampton Roads military housing market keeps demand steady year-round.</div>
+          <div class="start-row">First step: <span>Get Virginia notary commission ($45 fee) and take the NNA signing agent course online</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="income-section">
+    <div class="sec-label">Realistic income at ~20 hrs/week</div>
+    <div class="income-grid">
+      <div class="income-card">
+        <div class="income-num">$52K</div>
+        <div class="income-lbl">Doc review contracting only — 20 hrs/wk at $50/hr avg</div>
+      </div>
+      <div class="income-card">
+        <div class="income-num">$58K</div>
+        <div class="income-lbl">2 PI firm retainers plus medical chronology overflow</div>
+      </div>
+      <div class="income-card">
+        <div class="income-num">$65K+</div>
+        <div class="income-lbl">eDiscovery consulting plus course passive income after 12 mo</div>
+      </div>
+      <div class="income-card">
+        <div class="income-num">$80K+</div>
+        <div class="income-lbl">Legal VA agency model at scale — 18–24 mo runway</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <p><strong>Recommended starting stack:</strong> Lead with document review contracting for immediate income — zero ramp time, agencies handle client acquisition, earning within weeks. Layer in 1–2 PI firm retainer clients over the first 90 days. Build the medical chronology service brand in parallel. That combination hits $50K+ at part-time hours within 3–4 months and creates three separate income sources with no single point of failure.</p>
+  </div>
+
+</main>
+
+<footer>
+  Built to help Erin explore independent work options — eDiscovery, legal ops &amp; beyond.
+</footer>
+
+<script>
+function filterCards(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) {
+      c.classList.remove('hidden');
+    } else {
+      c.classList.add('hidden');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
